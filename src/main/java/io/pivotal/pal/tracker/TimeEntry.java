@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class TimeEntry {
-    private long id;
+    private long id =1L;
     private long projectId;
     private long userId;
     private LocalDate date;
@@ -55,6 +55,7 @@ public class TimeEntry {
     }
 
     public TimeEntry(long projectId, long userId, LocalDate date, int hours){
+        this.id = id;
         this.projectId = projectId;
         this.userId = userId;
         this.date = date;
@@ -69,9 +70,9 @@ public class TimeEntry {
         this.hours = hours;
     }
 
-    public TimeEntry create(TimeEntry any, int hours) {
-        any.setHours(hours);
-        return any;
+    public TimeEntry create(TimeEntry entry, int hours) {
+        entry.setHours(hours);
+        return entry;
     }
 
     @Override

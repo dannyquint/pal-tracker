@@ -5,20 +5,14 @@ import java.util.List;
 
 public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     private List<TimeEntry> timeEntries = new ArrayList<TimeEntry>();
-
-    @Override
-    public TimeEntry create(TimeEntry any, int hours) {
-        TimeEntry entry = new TimeEntry(any.getId(), any.getProjectId(), any.getUserId(), any.getDate(), hours);
-        this.timeEntries.add(entry);
-       return entry;
-    }
+    long id = 1L;
 
     public List<TimeEntry> list(){
-        return new ArrayList<>();
+        return this.timeEntries;
     }
 
-    public long read(long timeEntryId){
-        return timeEntryId;
+    public TimeEntry read(long timeEntryId){
+        return null;
     }
 
     public TimeEntry find(long timeEntryId){
@@ -30,14 +24,28 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     return null;
     }
 
-    public void delete(long timeEntryId){
-
+    public TimeEntry delete(long timeEntryId){
+        this.timeEntries.removeIf(entry -> (entry.getId() == timeEntryId));
+        return null;
     }
+
     public TimeEntry update(long timeEntryId, TimeEntry expected){
+        for (TimeEntry entry : this.timeEntries){
+            if(Long.compare(entry.getId(), timeEntryId) == 0){
+                entry.setProjectId(expected.getProjectId());
+                entry.setUserId(expected.getUserId());
+                entry.setDate(expected.getDate());
+                entry.setHours(expected.getHours());
+                return entry;
+            }
+        }
         return null;
     }
 
     public TimeEntry create(TimeEntry timeEntry) {
-        return timeEntry;
+        this.id=this.id++;
+        TimeEntry entry = new TimeEntry(this.id++, timeEntry.getProjectId(), timeEntry.getUserId(), timeEntry.getDate(), timeEntry.getHours());
+        this.timeEntries.add(entry);
+        return entry;
     }
 }
